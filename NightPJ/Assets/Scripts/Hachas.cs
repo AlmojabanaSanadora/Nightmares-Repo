@@ -21,17 +21,4 @@ public class Hachas : MonoBehaviour
 
         transform.rotation = startRotation * Quaternion.Euler(0, 0, pendulumAngle);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            print("Player hit by Hachas!");
-            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(10); 
-            }
-        }
-    }
 }
