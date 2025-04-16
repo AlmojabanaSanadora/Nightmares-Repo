@@ -533,10 +533,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7390637
-  m_Height: 1.5189747
+  m_Radius: 0.50339556
+  m_Height: 1.6236377
   m_Direction: 1
-  m_Center: {x: -0.000024196244, y: -0.2619683, z: -0.00000011632804}
+  m_Center: {x: 0.032483686, y: 0.42991993, z: -0.00000008497142}
 --- !u!114 &1496594106276803228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,7 +658,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 0}
-  gameOverCanvas: {fileID: 0}
   maxHealth: 100
   currentHealth: 0
 --- !u!82 &3926330766245048746
