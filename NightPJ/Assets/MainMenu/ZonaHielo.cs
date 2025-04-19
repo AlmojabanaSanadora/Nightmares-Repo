@@ -2,35 +2,32 @@ using UnityEngine;
 
 public class ZonaHielo : MonoBehaviour
 {
-    public PhysicsMaterial friccionHielo; // Asigna esto desde el Inspector
+    public PhysicsMaterial friccionHielo; // Assign this in the Inspector
+    public PhysicsMaterial friccionNormal; // Assign the normal friction material in the Inspector
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
+{
+    if (other.CompareTag("Player"))
     {
-        if (collision.gameObject.CompareTag("Player"))
+        Collider playerCollider = other.GetComponent<Collider>();
+        if (playerCollider != null)
         {
-            Collider playerCollider = collision.gameObject.GetComponent<Collider>();
-            if (playerCollider != null)
-            {
-                playerCollider.material = friccionHielo;
-            }
+            playerCollider.material = friccionHielo;
+            Debug.Log("Applied Ice Friction");
         }
     }
+}
 
-    private void OnCollisionExit(Collision collision)
+private void OnTriggerExit(Collider other)
+{
+    if (other.CompareTag("Player"))
     {
-        if (collision.gameObject.CompareTag("Player"))
+        Collider playerCollider = other.GetComponent<Collider>();
+        if (playerCollider != null)
         {
-            Collider playerCollider = collision.gameObject.GetComponent<Collider>();
-            if (playerCollider != null)
-            {
-                // Restaurar la fricción normal (puedes cambiar estos valores si quieres)
-                PhysicsMaterial friccionNormal = new PhysicsMaterial();
-                friccionNormal.dynamicFriction = 0.6f;
-                friccionNormal.staticFriction = 0.6f;
-                friccionNormal.frictionCombine = PhysicsMaterialCombine.Average;
-
-                playerCollider.material = friccionNormal;
-            }
+            playerCollider.material = friccionNormal;
+            Debug.Log("Restored Normal Friction");
         }
     }
+}
 }

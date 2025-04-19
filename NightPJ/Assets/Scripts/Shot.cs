@@ -28,45 +28,52 @@ public class Shot : MonoBehaviour
     }
 
     private void Shoot()
+{
+    Ray ray = new Ray(spawnPoint.position, spawnPoint.forward);
+    RaycastHit hit;
+    Vector3 targetPoint = spawnPoint.position + spawnPoint.forward * rayRange;
+
+    if (Physics.Raycast(ray, out hit, rayRange, hitLayers))
     {
-        Ray ray = new Ray(spawnPoint.position, spawnPoint.forward);
-        RaycastHit hit;
-        Vector3 targetPoint = spawnPoint.position + spawnPoint.forward * rayRange; 
+        targetPoint = hit.point;
 
-        if (Physics.Raycast(ray, out hit, rayRange, hitLayers))
+        if (hit.collider.CompareTag("Enemy"))
         {
-            targetPoint = hit.point; 
-
-            if (hit.collider.CompareTag("Enemy"))
+            EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
             {
-                EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
-                if (enemyHealth != null)
-                {
-                    enemyHealth.TakeDamage(damage);
-                }
+                enemyHealth.TakeDamage(damage);
             }
         }
-        SpawnBullet(targetPoint);
     }
 
-    private void SpawnBullet(Vector3 targetPoint)
+    Debug.Log($"Ray Origin: {spawnPoint.position}, Ray Direction: {spawnPoint.forward}, Target Point: {targetPoint}");
+    SpawnBullet(targetPoint);
+}
+
+private void SpawnBullet(Vector3 targetPoint)
+{
+    GameObject bulletInstance = Instantiate(bullet, spawnPoint.position, Quaternion.identity);
+
+    Vector3 direction = (targetPoint - spawnPoint.position).normalized;
+
+    Debug.Log($"Spawn Point: {spawnPoint.position}, Target Point: {targetPoint}, Direction: {direction}");
+
+    Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
+
+    if (rb != null)
     {
-        GameObject bulletInstance = Instantiate(bullet, spawnPoint.position, Quaternion.identity);
-
-        Vector3 direction = (targetPoint - spawnPoint.position).normalized;
-
-        Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearVelocity = direction * projectileSpeed;
-        }
-        else
-        {
-            StartCoroutine(MoveBullet(bulletInstance, targetPoint));
-        }
-
-        Destroy(bulletInstance, projectileLifeTime);
+        rb.linearVelocity = direction * projectileSpeed;
     }
+    else
+    {
+        StartCoroutine(MoveBullet(bulletInstance, targetPoint));
+    }
+
+    Destroy(bulletInstance, projectileLifeTime);
+}
+
+    
 
     private IEnumerator MoveBullet(GameObject bulletInstance, Vector3 targetPoint)
     {
