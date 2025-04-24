@@ -47,7 +47,6 @@ public class Shot : MonoBehaviour
         }
     }
 
-    Debug.Log($"Ray Origin: {spawnPoint.position}, Ray Direction: {spawnPoint.forward}, Target Point: {targetPoint}");
     SpawnBullet(targetPoint);
 }
 
@@ -57,7 +56,6 @@ private void SpawnBullet(Vector3 targetPoint)
 
     Vector3 direction = (targetPoint - spawnPoint.position).normalized;
 
-    Debug.Log($"Spawn Point: {spawnPoint.position}, Target Point: {targetPoint}, Direction: {direction}");
 
     Rigidbody rb = bulletInstance.GetComponent<Rigidbody>();
 
